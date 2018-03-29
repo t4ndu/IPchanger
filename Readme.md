@@ -1,7 +1,6 @@
 IP Changer V1.1 for Windows 7 and 10.
 
-Creat a Textfile in Notepas.
-
+Create a textfile in notepad.
 Insert IPchanger.txt then save it as .bat
 
 run as administrator.
