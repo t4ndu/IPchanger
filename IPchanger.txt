@@ -1,0 +1,77 @@
+@echo off
+echo " _    ________________________  ____  _   __"
+echo "| |  / / ____/ ____/_  __/ __ \/ __ \/ | / /"
+echo "| | / / __/ / /     / / / /_/ / / / /  |/ / "
+echo "| |/ / /___/ /___  / / / _, _/ /_/ / /|  /  "
+echo "|___/_____/\____/ /_/ /_/ |_|\____/_/ |_/   "
+echo "                                            "
+
+echo ############################################## 
+echo ####                                      #### 
+echo ####          IP-AUSWAHLSKRIPT            #### 
+echo ####          ================            #### 
+echo ####                                      #### 
+echo ####       VON: t4ndu                     #### 
+echo ####                                      #### 
+echo ####   WICHTIG: Das Skript IMMER          #### 
+echo ####            als Admin starten!        #### 
+echo ####                                      #### 
+echo ############################################## 
+echo ####                                      #### 
+echo ####   1 = ETCS Siemens (192.168.1.20)    #### 
+echo ####   2 = X4 (10.0.1.89)                 #### 
+echo ####   3 = X4 ETCS (192.168.0.5)          #### 
+echo ####   4 = Siemens AG DHCP                #### 
+echo ####   5 = Check your IP                  #### 
+echo ####   0 = Schliessen / Abbrechen         #### 
+echo ####                                      #### 
+echo ############################################## 
+
+:auswahl
+set /P wahl=Auswahl: 
+if /i "%wahl%"=="1" goto:fest
+if /i "%wahl%"=="2" goto:fest1
+if /i "%wahl%"=="3" goto:fest2
+if /i "%wahl%"=="4" goto:auto
+if /i "%wahl%"=="5" goto:check
+if /i "%wahl%"=="0" goto:exit
+
+
+echo Falsche Auswahl. Tipp: Weniger saufen. :-P
+goto:auswahl
+
+:fest
+REM Network-IP-Config for "LAN-connection ETCS Siemens"
+netsh interface ip set address name="Local Area Connection" source=static addr=192.168.1.20 mask=255.255.0.0
+echo IP set to 192.168.1.20
+timeout /t 2 >nul
+goto:check 
+
+:fest1 
+REM Network-IP-Config for "LAN-connection CCU/TCU"
+netsh interface ip set address name="Local Area Connection" source=static addr=10.0.1.89 mask=255.255.0.0
+echo IP set to 10.0.1.89
+timeout /t 2 >nul
+goto:check 
+
+:fest2
+REM Network-IP-Config for "LAN-connection Alstom DRU"
+netsh interface ip set address name="Local Area Connection" source=static addr=192.168.0.5 mask=255.255.0.0
+echo IP set to 192.168.0.5
+timeout /t 2 >nul
+goto:check 
+
+:auto
+REM Network-IP-Config for "Siemens Network DHCP"
+netsh interface ip set address "Local Area Connection" dhcp
+echo IP set to DHCP
+goto:check
+
+:check
+timeout 2 >nul
+ipconfig | find /i "ipv4"
+goto:auswahl
+
+:exit 
+goto:eof
+
