@@ -6,8 +6,7 @@ Insert IPchanger.txt then save it as .bat
 run as administrator.
 
 if you have an english or german version of windows you have to change the 
-Local Area Connection to LAN-Verbindung.
-
+interface ip set address name="Local Area Connection"  to "LAN-Verbindung".
 
 by t4ndu
 
